@@ -1,20 +1,28 @@
 package Libreria.Entidades;
 
 import java.io.Serializable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
-@Entity(name = "autor")
+@Entity
+@Table(name = "AUTOR")
 public class Autor implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "ID_AUTOR")
     private String id;
+
+    @Column(name = "NOMBRE", nullable = false)
     private String nombre;
+
+    @Column(nullable = false)
     private Boolean alta;
 
     public Autor(String id, String nombre, Boolean alta) {
