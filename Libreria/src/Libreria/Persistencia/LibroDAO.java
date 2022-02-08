@@ -24,6 +24,7 @@ public final class LibroDAO extends DAO<Libro> {
         conectar();
         Libro l = (Libro) EM.createQuery("SELECT l FROM Libro l WHERE l.isbn LIKE :isbn")
                 .setParameter("isbn", isbn).getSingleResult();
+        desconectar();
         return l;
     }
 
