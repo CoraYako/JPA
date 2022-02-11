@@ -4,7 +4,7 @@ import Libreria.Entidades.Autor;
 import Libreria.Persistencia.AutorDAO;
 import java.util.List;
 
-public class AutorServicio {
+public final class AutorServicio {
 
     private final AutorDAO dao;
 
@@ -12,7 +12,7 @@ public class AutorServicio {
         dao = new AutorDAO();
     }
 
-    public Autor guardar(String nombre) throws Exception {
+    public Autor crearYGuardar(String nombre) throws Exception {
         if (nombre.trim().isEmpty()) {
             throw new Exception("Debe indicar un nombre válido");
         }
@@ -26,18 +26,18 @@ public class AutorServicio {
         return a;
     }
 
-    public void eliminar(String id) throws Exception {
-        if (id.trim().isEmpty()) {
-            throw new Exception("Debe indicar un id válido");
+    public void eliminar(Autor a) throws Exception {
+        if (a == null) {
+            throw new Exception("Debe indicar un Autor válido");
         }
-        dao.eliminar(id);
+        dao.eliminar(a);
     }
 
-    public Autor editar(String id) throws Exception {
-        if (id.trim().isEmpty()) {
-            throw new Exception("Debe indicar un id válido");
+    public Autor editar(Autor a) throws Exception {
+        if (a == null) {
+            throw new Exception("Debe indicar un Autor válido");
         }
-        return dao.editar(id);
+        return dao.editar(a);
     }
 
     public Autor buscarPorId(String id) throws Exception {
@@ -45,6 +45,13 @@ public class AutorServicio {
             throw new Exception("Debe indicar un id válido");
         }
         return dao.buscarPorId(id);
+    }
+
+    public List<Autor> buscarPorNombre(String nombre) throws Exception {
+        if (nombre.trim().isEmpty()) {
+            throw new Exception("Debe indicar un nombre válido");
+        }
+        return dao.buscarPorNombre(nombre);
     }
 
     public List<Autor> listarTodos() throws Exception {

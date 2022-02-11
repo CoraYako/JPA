@@ -10,13 +10,13 @@ public final class EditorialDAO extends DAO<Editorial> {
         super.guardar(e);
     }
 
-    public void eliminar(String id) throws Exception {
-        Editorial e = buscarPorId(id);
+    @Override
+    public void eliminar(Editorial e) throws Exception {
         super.eliminar(e);
     }
 
-    public Editorial editar(String id) throws Exception {
-        Editorial e = buscarPorId(id);
+    @Override
+    public Editorial editar(Editorial e) throws Exception {
         return super.editar(e);
     }
 

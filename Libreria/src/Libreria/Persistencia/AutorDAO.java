@@ -10,13 +10,13 @@ public final class AutorDAO extends DAO<Autor> {
         super.guardar(a);
     }
 
-    public void eliminar(String id) throws Exception {
-        Autor a = buscarPorId(id);
+    @Override
+    public void eliminar(Autor a) throws Exception {
         super.eliminar(a);
     }
 
-    public Autor editar(String id) throws Exception {
-        Autor a = buscarPorId(id);
+    @Override
+    public Autor editar(Autor a) throws Exception {
         return super.editar(a);
     }
 
@@ -25,6 +25,15 @@ public final class AutorDAO extends DAO<Autor> {
         Autor a = (Autor) EM.find(Autor.class, id);
         desconectar();
         return a;
+    }
+
+    public List<Autor> buscarPorNombre(String nombre) throws Exception {
+        conectar();
+        List<Autor> autores = EM.createQuery("SELECT a FROM Autor a WHERE a.nombre LIKE :nombre")
+                .setParameter("nombre", "%" + nombre + "%")
+                .getResultList();
+        desconectar();
+        return autores;
     }
 
     public List<Autor> listarTodos() throws Exception {

@@ -10,17 +10,17 @@ public final class LibroDAO extends DAO<Libro> {
         super.guardar(l);
     }
 
-    public void eliminar(Long isbn) throws Exception {
-        Libro l = buscarPorIsbn(isbn);
+    @Override
+    public void eliminar(Libro l) throws Exception {
         super.eliminar(l);
     }
 
-    public Libro editar(Long isbn) throws Exception {
-        Libro l = buscarPorIsbn(isbn);
+    @Override
+    public Libro editar(Libro l) throws Exception {
         return super.editar(l);
     }
 
-    public Libro buscarPorIsbn(Long isbn) throws Exception {
+    public Libro buscarPorIsbn(Integer isbn) throws Exception {
         conectar();
         Libro l = (Libro) EM.createQuery("SELECT l FROM Libro l WHERE l.isbn LIKE :isbn")
                 .setParameter("isbn", isbn).getSingleResult();

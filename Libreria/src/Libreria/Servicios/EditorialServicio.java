@@ -12,7 +12,7 @@ public final class EditorialServicio {
         dao = new EditorialDAO();
     }
 
-    public Editorial guardar(String nombre) throws Exception {
+    public Editorial crearYGuardar(String nombre) throws Exception {
         if (nombre.trim().isEmpty()) {
             throw new Exception("Debe indicar un nombre válido");
         }
@@ -25,18 +25,18 @@ public final class EditorialServicio {
         return e;
     }
 
-    public void eliminar(String id) throws Exception {
-        if (id.trim().isEmpty()) {
-            throw new Exception("Debe indicar un id válido");
+    public void eliminar(Editorial e) throws Exception {
+        if (e == null) {
+            throw new Exception("Debe indicar un Editorial válido");
         }
-        dao.eliminar(id);
+        dao.eliminar(e);
     }
 
-    public Editorial editar(String id) throws Exception {
-        if (id.trim().isEmpty()) {
-            throw new Exception("Debe indicar un id válido");
+    public Editorial editar(Editorial e) throws Exception {
+        if (e == null) {
+            throw new Exception("Debe indicar un Editorial válido");
         }
-        return dao.editar(id);
+        return dao.editar(e);
     }
 
     public Editorial buscarPorId(String id) throws Exception {

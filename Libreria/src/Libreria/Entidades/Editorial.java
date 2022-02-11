@@ -19,7 +19,7 @@ public class Editorial implements Serializable {
     @Column(name = "ID_EDOTORIAL")
     private String id;
 
-    @Column(name = "NOMBRE", nullable = false)
+    @Column(name = "NOMBRE", nullable = false, unique = true)
     private String nombre;
 
     @Column(nullable = false)

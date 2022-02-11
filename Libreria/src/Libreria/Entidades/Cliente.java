@@ -9,29 +9,45 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "AUTOR")
-public class Autor implements Serializable {
+@Table(name = "CLIENTE")
+public class Cliente implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "ID_AUTOR")
+    @Column(name = "ID_CLIENTE")
     private String id;
 
-    @Column(name = "NOMBRE", nullable = false, unique = true)
+    @Column(name = "DNI", nullable = false, unique = true)
+    private Integer documento;
+
+    @Column(name = "NOMBRE", nullable = false)
     private String nombre;
 
-    @Column(nullable = false)
-    private Boolean alta;
+    @Column(name = "APELLIDO", nullable = false)
+    private String apellido;
 
-    public Autor(String id, String nombre, Boolean alta) {
+    @Column(name = "TELEFONO")
+    private String telefono;
+
+    public Cliente(String id, Integer documento, String nombre, String apellido, String telefono) {
         this.id = id;
+        this.documento = documento;
         this.nombre = nombre;
-        this.alta = alta;
+        this.apellido = apellido;
+        this.telefono = telefono;
     }
 
-    public Autor() {
+    public Cliente() {
+    }
+
+    public Integer getDocumento() {
+        return documento;
+    }
+
+    public void setDocumento(Integer documento) {
+        this.documento = documento;
     }
 
     public String getNombre() {
@@ -42,12 +58,20 @@ public class Autor implements Serializable {
         this.nombre = nombre;
     }
 
-    public Boolean getAlta() {
-        return alta;
+    public String getApellido() {
+        return apellido;
     }
 
-    public void setAlta(Boolean alta) {
-        this.alta = alta;
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
     }
 
     public String getId() {
@@ -68,10 +92,10 @@ public class Autor implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Autor)) {
+        if (!(object instanceof Cliente)) {
             return false;
         }
-        Autor other = (Autor) object;
+        Cliente other = (Cliente) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -80,7 +104,7 @@ public class Autor implements Serializable {
 
     @Override
     public String toString() {
-        return "Autor{" + "id=" + id + ", nombre=" + nombre + ", alta=" + alta + '}';
+        return "Cliente{" + "id=" + id + ", documento=" + documento + ", nombre=" + nombre + ", apellido=" + apellido + ", telefono=" + telefono + '}';
     }
 
 }

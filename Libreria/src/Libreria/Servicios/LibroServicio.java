@@ -14,7 +14,7 @@ public final class LibroServicio {
         dao = new LibroDAO();
     }
 
-    public Libro guardar(Long isbn, String titulo, Integer anio, Integer ejemplares,
+    public Libro crearYGuardar(Integer isbn, String titulo, Integer anio, Integer ejemplares,
             Integer ejemplaresPrestados, Integer ejemplaresRestantes, Autor autor, Editorial editorial) throws Exception {
 
         Libro l = null;
@@ -43,27 +43,24 @@ public final class LibroServicio {
         return l;
     }
 
-    public void eliminar(Long isbn) throws Exception {
-        if (isbn == null || isbn < 0) {
-            throw new Exception("Debe indicar un código ISBN a buscar");
+    public void eliminar(Libro l) throws Exception {
+        if (l == null) {
+            throw new Exception("Debe indicar un libro a eliminar");
         }
-
-        dao.eliminar(isbn);
+        dao.eliminar(l);
     }
 
-    public Libro editar(Long isbn) throws Exception {
-        if (isbn == null || isbn < 0) {
-            throw new Exception("Debe indicar un código ISBN a buscar");
+    public Libro editar(Libro l) throws Exception {
+        if (l == null) {
+            throw new Exception("Debe indicar un libro a editar");
         }
-
-        return dao.editar(isbn);
+        return dao.editar(l);
     }
 
-    public Libro buscarPorIsbn(Long isbn) throws Exception {
+    public Libro buscarPorIsbn(Integer isbn) throws Exception {
         if (isbn == null || isbn < 0) {
             throw new Exception("Debe indicar un código ISBN a buscar");
         }
-
         return dao.buscarPorIsbn(isbn);
     }
 
@@ -71,7 +68,6 @@ public final class LibroServicio {
         if (titulo.trim().isEmpty()) {
             throw new Exception("Debe indicar un título a buscar");
         }
-
         return dao.buscarPorTitulo(titulo);
     }
 
@@ -79,7 +75,6 @@ public final class LibroServicio {
         if (autor.trim().isEmpty()) {
             throw new Exception("Debe indicar un autor a buscar");
         }
-
         return dao.buscarPorAutor(autor);
     }
 
@@ -87,15 +82,14 @@ public final class LibroServicio {
         if (editorial.trim().isEmpty()) {
             throw new Exception("Debe indicar una editorial a buscar");
         }
-
         return dao.buscarPorEditorial(editorial);
     }
-    
+
     public List<Libro> listarTodos() throws Exception {
         return dao.listarTodos();
     }
 
-    public void validar(Long isbn, String titulo, Integer anio, Integer ejemplares,
+    public void validar(Integer isbn, String titulo, Integer anio, Integer ejemplares,
             Integer ejemplaresPrestados, Integer ejemplaresRestantes, Autor autor, Editorial editorial) throws Exception {
 
         if (isbn == null) {

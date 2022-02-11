@@ -3,6 +3,7 @@ package Libreria.Entidades;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -22,9 +23,9 @@ public class Libro implements Serializable {
     private String id;
 
     @Column(name = "ISBN", unique = true, nullable = false)
-    private Long isbn;
+    private Integer isbn;
 
-    @Column(name = "TITULO", nullable = false)
+    @Column(name = "TITULO", nullable = false, unique = true)
     private String titulo;
 
     @Column(name = "AÑO", nullable = false)
@@ -42,14 +43,14 @@ public class Libro implements Serializable {
     private Boolean alta;
 
     @JoinColumn(name = "AUTOR", nullable = false)
-    @ManyToOne(optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Autor autor;
 
     @JoinColumn(name = "EDITORIAL", nullable = false)
-    @ManyToOne(optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Editorial editorial;
 
-    public Libro(String id, Long isbn, String titulo, Integer anio, Integer ejemplares, Integer ejemplaresPrestados, Integer ejemplaresRestantes, Boolean alta, Autor autor, Editorial editorial) {
+    public Libro(String id, Integer isbn, String titulo, Integer anio, Integer ejemplares, Integer ejemplaresPrestados, Integer ejemplaresRestantes, Boolean alta, Autor autor, Editorial editorial) {
         this.id = id;
         this.isbn = isbn;
         this.titulo = titulo;
@@ -65,11 +66,11 @@ public class Libro implements Serializable {
     public Libro() {
     }
 
-    public Long getIsbn() {
+    public Integer getIsbn() {
         return isbn;
     }
 
-    public void setIsbn(Long isbn) {
+    public void setIsbn(Integer isbn) {
         this.isbn = isbn;
     }
 
