@@ -5,48 +5,45 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "LIBRO")
+@Table(name = "libros")
 public class Libro implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "ID_LIBRO")
+    @GeneratedValue(generator = "uuid")
+    @Column(name = "id_libro")
     private String id;
 
-    @Column(name = "ISBN", unique = true, nullable = false)
+    @Column(name = "isbn", unique = true, nullable = false)
     private Integer isbn;
 
-    @Column(name = "TITULO", nullable = false, unique = true)
+    @Column(name = "titulo", nullable = false, unique = true)
     private String titulo;
 
-    @Column(name = "AÑO", nullable = false)
+    @Column(name = "año", nullable = false)
     private Integer anio;
 
-    @Column(name = "EJEMPLARES", nullable = false)
+    @Column(name = "ejemplares_disponibles", nullable = false)
     private Integer ejemplares;
 
-    @Column(name = "EJEMPLARES_PRESTADOS", nullable = false)
+    @Column(name = "ejemplares_prestados", nullable = false)
     private Integer ejemplaresPrestados;
 
-    @Column(name = "EJEMPLARES_RESTANTES", nullable = false)
+    @Column(name = "ejemplares_restantes", nullable = false)
     private Integer ejemplaresRestantes;
 
     private Boolean alta;
 
-    @JoinColumn(name = "AUTOR", nullable = false)
+    @JoinColumn(name = "autor", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Autor autor;
 
-    @JoinColumn(name = "EDITORIAL", nullable = false)
+    @JoinColumn(name = "editorial", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Editorial editorial;
 
@@ -155,7 +152,6 @@ public class Libro implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof Libro)) {
             return false;
         }

@@ -9,7 +9,6 @@ public class Main {
         try {
             lm.menu();
         } catch (Exception e) {
-            e.printStackTrace();
             System.out.println("Error: " + e.getMessage());
         }
 

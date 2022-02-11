@@ -4,22 +4,19 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "EDITORIAL")
+@Table(name = "editoriales")
 public class Editorial implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "ID_EDOTORIAL")
+    @GeneratedValue(generator = "uuid")
+    @Column(name = "id_editorial")
     private String id;
 
-    @Column(name = "NOMBRE", nullable = false, unique = true)
+    @Column(name = "nombre", nullable = false, unique = true)
     private String nombre;
 
     @Column(nullable = false)
@@ -67,7 +64,6 @@ public class Editorial implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof Editorial)) {
             return false;
         }
