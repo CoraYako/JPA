@@ -24,10 +24,18 @@ public final class PrestamoServicio {
             p.setCliente(cliente);
             p.setFechaPrestamo(fechaPrestamo);
             p.setFechaDevolucion(fechaDevolucion);
+            dao.guardar(p);
         } catch (Exception e) {
             throw e;
         }
         return p;
+    }
+    
+    public Prestamo buscarPorId(String id) throws Exception {
+        if (id.trim().isEmpty()) {
+            throw new Exception("Debe indicar el ID correcto del Préstamo a buscar");
+        }
+        return dao.buscarPorId(id);
     }
 
     public Prestamo editar(Prestamo p) throws Exception {

@@ -1,12 +1,17 @@
 package Libreria;
 
 import Libreria.Entidades.Autor;
+import Libreria.Entidades.Cliente;
 import Libreria.Entidades.Editorial;
 import Libreria.Entidades.Libro;
+import Libreria.Entidades.Prestamo;
 import Libreria.Servicios.AutorServicio;
+import Libreria.Servicios.ClienteServicio;
 import Libreria.Servicios.EditorialServicio;
 import Libreria.Servicios.LibroServicio;
+import Libreria.Servicios.PrestamoServicio;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
@@ -15,6 +20,8 @@ public final class LibreriaMenu {
     private final LibroServicio ls;
     private final AutorServicio as;
     private final EditorialServicio es;
+    private final ClienteServicio cs;
+    private final PrestamoServicio ps;
     private List lista;
     private final Scanner input;
 
@@ -22,6 +29,8 @@ public final class LibreriaMenu {
         ls = new LibroServicio();
         as = new AutorServicio();
         es = new EditorialServicio();
+        cs = new ClienteServicio();
+        ps = new PrestamoServicio();
         lista = new ArrayList<>();
         input = new Scanner(System.in).useDelimiter("\n");
     }
@@ -30,9 +39,13 @@ public final class LibreriaMenu {
         Autor a = null;
         Libro l = null;
         Editorial e = null;
+        Cliente c = null;
+        Prestamo p = null;
 
-        String nombre, titulo, editorial, id;
-        Integer opcion, isbn, anio, ejemplares, ejPrestados, ejRestantes;
+        String nombre, titulo, editorial, id, eleccion, apellido, telefono;
+        Integer opcion, isbn, anio, ejemplares, ejPrestados, ejRestantes, dni, dia, mes;
+        Date fPrestamo, fDevolucion;
+
         do {
             menuContextual();
             opcion = input.nextInt();
@@ -94,14 +107,14 @@ public final class LibreriaMenu {
 
                     System.out.println("Selecctione un Autor de la lista (ID):");
                     lista = as.listarTodos();
-                    visualizar(lista);
+                    verificarLista(lista);
                     System.out.print("--> ");
                     id = input.next();
                     a = as.buscarPorId(id);
 
                     System.out.println("Seleccione una Editorial de la lista (ID):");
                     lista = es.listarTodos();
-                    visualizar(lista);
+                    verificarLista(lista);
                     System.out.print("--> ");
                     id = input.next();
                     e = es.buscarPorId(id);
@@ -174,10 +187,115 @@ public final class LibreriaMenu {
                         es.editar(e);
                     }
                     break;
+                case 17:
+                    System.out.print("Indique si el cliente ya está en la base de datos (s/n):");
+                    eleccion = input.next();
+
+                    if (eleccion.equalsIgnoreCase("n")) {
+                        System.out.println("Indique los siguiente datos del cliente");
+                        System.out.print("DNI: ");
+                        dni = input.nextInt();
+                        System.out.print("Nombre: ");
+                        nombre = input.next();
+                        System.out.print("Apellido: ");
+                        apellido = input.next();
+                        System.out.print("Teléfono: ");
+                        telefono = input.next();
+                        c = cs.crearYGuardar(dni, nombre, apellido, telefono);
+                    } else {
+                        System.out.println("Lista de clientes:");
+                        lista = cs.listarTodos();
+                        verificarLista(lista);
+                        System.out.print("Indique el ID del Cliente: ");
+                        id = input.next();
+                        c = cs.buscarPorId(id);
+                    }
+
+                    System.out.println("Lista de Libros:");
+                    lista = ls.listarTodos();
+                    verificarLista(lista);
+                    System.out.print("Indique mediante el ISBN, cuál libro será prestado: ");
+                    isbn = input.nextInt();
+                    l = ls.buscarPorIsbn(isbn);
+                    if (l.getEjemplaresRestantes().equals(0)) {
+                        System.out.println("No hay libros disponibles para realizar el préstamo");
+                        break;
+                    }
+                    l.setEjemplaresPrestados(l.getEjemplaresPrestados() + 1);
+                    l.setEjemplaresRestantes(l.getEjemplaresRestantes() - 1);
+                    ls.editar(l);
+
+                    System.out.println("**La fecha del préstamo es la actual**");
+                    fPrestamo = new Date();
+                    System.out.println("Indique la fecha de devolución del Libro (dd/mm/aaaa)");
+                    System.out.print("Día: ");
+                    dia = input.nextInt();
+                    System.out.print("Mes: ");
+                    mes = input.nextInt();
+                    System.out.print("Año: ");
+                    anio = input.nextInt();
+                    fDevolucion = new Date(anio - 1900, mes - 1, dia);
+
+                    ps.crearYGuardar(fPrestamo, fDevolucion, l, c);
+                    System.out.println("¡Prestamo registrado!");
+                    break;
+                case 18:
+                    System.out.println("Indique los siguiente datos del cliente");
+                    System.out.print("DNI: ");
+                    dni = input.nextInt();
+                    System.out.print("Nombre: ");
+                    nombre = input.next();
+                    System.out.print("Apellido: ");
+                    apellido = input.next();
+                    System.out.print("Teléfono: ");
+                    telefono = input.next();
+                    c = cs.crearYGuardar(dni, nombre, apellido, telefono);
+                    break;
+                case 19:
+                    lista = ps.listarTodos();
+                    verificarLista(lista);
+                    System.out.print("Indique el ID del Préstamo a dar de baja: ");
+                    id = input.next();
+                    p = ps.buscarPorId(id);
+                    verificarObjetoYMostrar(p);
+                    l = p.getLibro();
+                    l.setEjemplaresPrestados(l.getEjemplaresPrestados() - 1);
+                    l.setEjemplaresRestantes(l.getEjemplaresRestantes() + 1);
+                    ls.editar(l);
+                    ps.eliminar(p);
+                    System.out.println("Prestamo eliminado");
+                    break;
+                case 20:
+                    System.out.println("Lista de Clientes:");
+                    lista = cs.listarTodos();
+                    verificarLista(lista);
+                    System.out.print("Indique el ID del Cliente a dar de baja: ");
+                    id = input.next();
+                    c = cs.buscarPorId(id);
+                    verificarObjetoYMostrar(c);
+                    cs.eliminar(c);
+                    System.out.println("¡Cliente removido exitosamente!");
+                    break;
+                case 21:
+                    lista = ps.listarTodos();
+                    System.out.println("Lista de TODOS los Préstamos: ");
+                    verificarLista(lista);
+                    break;
+                case 22:
+                    System.out.print("Indique el ID del Cliente: ");
+                    id = input.next();
+                    lista = ps.listarPrestamoPorIdCliente(id);
+                    System.out.println("Lista de Préstamos del Cliente con ID " + id + ":");
+                    verificarLista(lista);
+                    break;
+                case 23:
+                    lista = cs.listarTodos();
+                    verificarLista(lista);
+                    break;
                 default:
                     System.out.println("Aisistente finalizado");
             }
-        } while (opcion != 17);
+        } while (opcion != 24);
     }
 
     private void visualizar(List l) {
@@ -221,7 +339,14 @@ public final class LibreriaMenu {
         System.out.println("14. Listar todos los Libros");
         System.out.println("15. Editar un Autor");
         System.out.println("16. Editar una Editorial");
-        System.out.println("17. Salir");
+        System.out.println("17. Registrar un Préstamo");
+        System.out.println("18. Registrar un Cliente");
+        System.out.println("19. Dar de baja un Préstamo");
+        System.out.println("20. Dar de baja un Cliente");
+        System.out.println("21. Listar todos los Préstamos");
+        System.out.println("22. Listar todos los Prestamos de un Cliente");
+        System.out.println("23. Listar todos los Clientes registrados");
+        System.out.println("24. Salir");
         System.out.print("> ");
     }
 

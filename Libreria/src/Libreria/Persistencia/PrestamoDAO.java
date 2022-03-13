@@ -20,6 +20,13 @@ public final class PrestamoDAO extends DAO<Prestamo> {
         super.eliminar(p);
     }
 
+    public Prestamo buscarPorId(String id) throws Exception {
+        conectar();
+        Prestamo p = (Prestamo) EM.find(Prestamo.class, id);
+        desconectar();
+        return p;
+    }
+
     public List<Prestamo> listarPrestamosPorIdCliente(String id) throws Exception {
         conectar();
         List<Prestamo> lista = EM.createQuery("SELECT p.libro FROM Prestamo p WHERE p.cliente.id LIKE :id")

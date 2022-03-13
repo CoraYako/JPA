@@ -22,9 +22,7 @@ public final class ClienteDAO extends DAO<Cliente> {
 
     public Cliente buscarPorId(String id) throws Exception {
         conectar();
-        Cliente c = (Cliente) EM.createQuery("SELECT c FROM Cliente c WHERE c.id LIKE :id")
-                .setParameter("id", "%" + id + "%")
-                .getSingleResult();
+        Cliente c = (Cliente) EM.find(Cliente.class, id);
         desconectar();
         return c;
     }
